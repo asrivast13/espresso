@@ -113,6 +113,10 @@ class SpeechRecognitionTask(FairseqTask):
         self.word_dict = word_dict
         self.feat_in_channels = args.feat_in_channels
         torch.backends.cudnn.deterministic = True
+        # Compansate for the call of :func:`torch.rand()` used to be in
+        # :func:`fairseq.distributed_utils.distributed_init()`to make previous
+        # experiments reproducible
+        torch.rand(1)
 
     @classmethod
     def setup_task(cls, args, **kwargs):
